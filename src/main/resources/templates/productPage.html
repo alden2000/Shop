@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Products</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="productPage.js" defer></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Navbar</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" th:href="@{/}">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/products}">Products</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" th:href="@{/UserManagement}">User management</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">
+          Dropdown
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
+      <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Logout</button>
+    </form>
+  </div>
+</nav>
+<!--<label for="pageSizeInput" style="margin: 15px">Choose number of items per page:</label>-->
+<!--<select id="pageSizeInput" name="pageSizeInput" th:field="*{productPage}">-->
+<!--  <option th:value="'3'" th:text="3"></option>-->
+<!--  <option th:value="'5'" th:text="5"></option>-->
+<!--  <option th:value="'10'" th:text="10"></option>-->
+<!--  <option th:value="'15'" th:text="15"></option>-->
+<!--</select>-->
+
+<label for="dropDownList" style="margin: 15px">Choose number of items per page:</label>
+<select class="form-control" id="dropDownList" name="dropDownList">
+  <option th:each="option : ${options}" th:value="${option}" th:text="${option}" id="options"></option>
+</select>
+
+<div class="container my-2">
+  <h1>Product Management</h1>
+  <a th:href="@{/addProduct}" class="btn btn-primary btn-sm mb-3">Add Product</a>
+  <table class="table table-striped table-responsive-md">
+    <thead>
+    <tr>
+      <th>Product Name</th>
+      <th>Serial Number</th>
+      <th>Price</th>
+      <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product:${productPage}">
+      <td th:text="${product.getName()}"></td>
+      <td th:text="${product.getSerialNumber()}"></td>
+      <td contenteditable="true" th:text="${product.getPrice()}"></td>
+      <td th:text="${product.getDescription()}"></td>
+    </tr>
+    </tbody>
+
+  </table>
+    <ul style="display: inline-block;" class="pagination justify-content-center" th:if="${productPage.totalPages > 0}"
+         th:each="pageNumber : ${pageNumbers}">
+      <li class="page-item" >
+      <a th:href="@{/productPage(size=${productPage.size}, page=${pageNumber})}"
+         th:text="${pageNumber}"
+         class="page-link"></a>
+      </li>
+</ul>
+</div>
+
+</body>
+</html>
